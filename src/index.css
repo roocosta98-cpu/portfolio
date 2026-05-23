@@ -1,0 +1,335 @@
+@import "tailwindcss";
+
+/* ─── Custom Fonts ─────────────────────────────────── */
+:root {
+  --font-heading: 'Outfit', sans-serif;
+  --font-body: 'Inter', sans-serif;
+}
+
+/* ─── Base Reset ────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  background-color: #020409;
+  color: #e2e8f0;
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+}
+
+#root {
+  min-height: 100svh;
+  position: relative;
+}
+
+/* ─── Custom Scrollbar ──────────────────────────────── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #020409; }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #7c3aed, #06b6d4);
+  border-radius: 9999px;
+}
+
+/* ─── Glassmorphism Utilities ───────────────────────── */
+.glass-panel {
+  background: rgba(15, 20, 40, 0.55);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-input {
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #e2e8f0;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.glass-input:focus {
+  outline: none;
+  border-color: rgba(124, 58, 237, 0.7);
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15), 0 0 20px rgba(124, 58, 237, 0.2);
+}
+
+/* ─── Gradient Text ─────────────────────────────────── */
+.gradient-text {
+  background: linear-gradient(135deg, #a78bfa 0%, #60a5fa 40%, #22d3ee 80%, #a78bfa 100%);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradient-shift 6s ease infinite;
+}
+
+/* ─── Animated Gradient Border ──────────────────────── */
+.gradient-border-wrapper {
+  position: relative;
+  border-radius: inherit;
+}
+
+.gradient-border-wrapper::before {
+  content: '';
+  position: absolute;
+  inset: -1.5px;
+  border-radius: inherit;
+  background: conic-gradient(
+    from var(--border-angle, 0deg),
+    #7c3aed,
+    #06b6d4,
+    #a78bfa,
+    #ec4899,
+    #7c3aed
+  );
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  animation: border-rotate 4s linear infinite;
+}
+
+.gradient-border-wrapper:hover::before,
+.gradient-border-wrapper.active-border::before {
+  opacity: 1;
+}
+
+/* ─── Photo Container Animated Border ───────────────── */
+.photo-glow-border {
+  position: relative;
+  border-radius: 1.5rem;
+}
+
+.photo-glow-border::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 1.6rem;
+  background: conic-gradient(
+    from 0deg,
+    #7c3aed,
+    #ec4899,
+    #06b6d4,
+    #a78bfa,
+    #ec4899,
+    #7c3aed
+  );
+  z-index: -1;
+  animation: border-rotate 4s linear infinite;
+}
+
+.photo-glow-border::after {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border-radius: 2rem;
+  background: conic-gradient(
+    from 0deg,
+    #7c3aed40,
+    #ec489940,
+    #06b6d440,
+    #a78bfa40,
+    #7c3aed40
+  );
+  z-index: -2;
+  filter: blur(16px);
+  animation: border-rotate 4s linear infinite;
+}
+
+/* ─── Spotlight Card ────────────────────────────────── */
+.spotlight-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.spotlight-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(124, 58, 237, 0.08),
+    transparent 40%
+  );
+  z-index: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  opacity: 0;
+}
+
+.spotlight-card:hover::before {
+  opacity: 1;
+}
+
+/* ─── Keyframe Animations ───────────────────────────── */
+@property --border-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes border-rotate {
+  to { --border-angle: 360deg; }
+}
+
+@keyframes gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  33% { transform: translateY(-15px) rotate(3deg); }
+  66% { transform: translateY(-8px) rotate(-2deg); }
+}
+
+@keyframes float-reverse {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  33% { transform: translateY(12px) rotate(-3deg); }
+  66% { transform: translateY(6px) rotate(2deg); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(124, 58, 237, 0.3); }
+  50% { box-shadow: 0 0 40px rgba(124, 58, 237, 0.6), 0 0 80px rgba(6, 182, 212, 0.2); }
+}
+
+@keyframes ticker-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes timeline-draw {
+  from { height: 0; }
+  to { height: 100%; }
+}
+
+@keyframes particle-float {
+  0% { transform: translateY(100vh) translateX(0) rotate(0deg); opacity: 0; }
+  10% { opacity: 0.6; }
+  90% { opacity: 0.4; }
+  100% { transform: translateY(-100px) translateX(60px) rotate(360deg); opacity: 0; }
+}
+
+/* ─── Infinite Ticker ───────────────────────────────── */
+.ticker-wrapper {
+  overflow: hidden;
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 15%,
+    black 85%,
+    transparent
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 15%,
+    black 85%,
+    transparent
+  );
+}
+
+.ticker-track {
+  display: flex;
+  width: max-content;
+  animation: ticker-scroll 25s linear infinite;
+}
+
+.ticker-track:hover {
+  animation-play-state: paused;
+}
+
+/* ─── Bento Grid ────────────────────────────────────── */
+.bento-card {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.bento-card:hover {
+  transform: translateY(-4px);
+}
+
+/* ─── Skill Badge Glow ──────────────────────────────── */
+.skill-badge {
+  transition: all 0.25s ease;
+  cursor: default;
+}
+
+.skill-badge:hover {
+  transform: translateY(-2px) scale(1.05);
+}
+
+/* ─── Button Styles ─────────────────────────────────── */
+.btn-primary {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #7c3aed, #6366f1);
+  transition: all 0.3s ease;
+}
+
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #6366f1, #7c3aed, #a21caf);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.btn-primary:hover::before { opacity: 1; }
+.btn-primary:hover { box-shadow: 0 0 30px rgba(124, 58, 237, 0.5), 0 8px 32px rgba(124, 58, 237, 0.3); }
+
+.btn-secondary {
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+  border-color: rgba(124, 58, 237, 0.6);
+  background: rgba(124, 58, 237, 0.08);
+  box-shadow: 0 0 20px rgba(124, 58, 237, 0.2);
+}
+
+/* ─── Timeline ──────────────────────────────────────── */
+.timeline-line {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2px;
+  background: linear-gradient(180deg, transparent, #7c3aed 10%, #06b6d4 90%, transparent);
+  top: 0;
+  bottom: 0;
+}
+
+@media (max-width: 768px) {
+  .timeline-line {
+    left: 1.25rem;
+  }
+}
+
+/* ─── Section Divider ───────────────────────────────── */
+.section-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(124, 58, 237, 0.4), rgba(6, 182, 212, 0.4), transparent);
+  margin: 0;
+}
+
+/* ─── No Scrollbar ──────────────────────────────────── */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
